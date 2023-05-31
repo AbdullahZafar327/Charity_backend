@@ -20,6 +20,7 @@ import Transaction from './models/Transaction.js'
 import OverallStat from './models/OverallStat.js'
 import Performance from './models/PerformanceStat.js'
 import { dataCampaign , dataCampaignStat , dataTransaction , dataOverallStat , dataPerformanceStat} from './data/index.js'
+import connectDb from './mongodb/connect.js'
 
 //CONFIGURATIONS//
 dotenv.config()
@@ -41,29 +42,15 @@ app.use('/funds',fundRoutes)
 //MONGOOSE SETUP//
 const PORT  = process.env.PORT ||  9000;
 
-const startServer = async () => {
-  try {
-    mongoose.connect(process.env.MONGO_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology : true ,
-    }).then(()=>{
-        app.listen(PORT ,() => console.log(`Server is running on ${PORT}`))
-        
-        //INJECTING DATA TO DATABASE//ONLY ADD ONE TIME
-    
-          // User.insertMany(dataUser) 
-        //   Campaign.insertMany(dataCampaign)
-          // CampaignStat.insertMany(dataCampaignStat)
-        // Transaction.insertMany(dataTransaction)
-        // OverallStat.insertMany(dataOverallStat)
-        // Performance.insertMany(dataPerformanceStat)
-    }).catch((error) => console.log(`${error} did not connect`))
-    
-  } catch (error) {
-    console.log(error)
-  }
+const startServer = async () =>{
 
+  try {
+      connectDb(process.env.MONGO_URL)
+      app.listen(PORT,()=> console.log(`Server has Started on Port http://localhost:${PORT}`))
+  } catch (error) {
+      console.log(error)
+  }
+  
 }
 
-startServer()
-
+startServer();
