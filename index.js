@@ -40,20 +40,30 @@ app.use('/funds',fundRoutes)
 
 //MONGOOSE SETUP//
 const PORT  = process.env.PORT ||  9000;
-mongoose.connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology : true ,
-}).then(()=>{
-    app.listen(PORT ,() => console.log(`Server is running on ${PORT}`))
+
+const startServer = async () => {
+  try {
+    mongoose.connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology : true ,
+    }).then(()=>{
+        app.listen(PORT ,() => console.log(`Server is running on ${PORT}`))
+        
+        //INJECTING DATA TO DATABASE//ONLY ADD ONE TIME
     
-    //INJECTING DATA TO DATABASE//ONLY ADD ONE TIME
+          // User.insertMany(dataUser) 
+        //   Campaign.insertMany(dataCampaign)
+          // CampaignStat.insertMany(dataCampaignStat)
+        // Transaction.insertMany(dataTransaction)
+        // OverallStat.insertMany(dataOverallStat)
+        // Performance.insertMany(dataPerformanceStat)
+    }).catch((error) => console.log(`${error} did not connect`))
+    
+  } catch (error) {
+    console.log(error)
+  }
 
-      // User.insertMany(dataUser) 
-    //   Campaign.insertMany(dataCampaign)
-      // CampaignStat.insertMany(dataCampaignStat)
-    // Transaction.insertMany(dataTransaction)
-    // OverallStat.insertMany(dataOverallStat)
-    // Performance.insertMany(dataPerformanceStat)
-}).catch((error) => console.log(`${error} did not connect`))
+}
 
+startServer()
 
