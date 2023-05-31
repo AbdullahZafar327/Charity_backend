@@ -1,10 +1,16 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
+import * as dotenv from 'dotenv'
 
-const connectDb =async(url) =>{
-    mongoose.set('strictQuery',true)
-    await mongoose.connect(url)
-    .then(()=> console.log(`MongooDb connected Successfully`))
-    .catch((error)=> console.log(error))
-}
+dotenv.config()
 
-export default connectDb;
+const connectDb = async () => {
+    mongoose.set('strictQuery', true);
+    await mongoose
+      .connect(process.env.MONGODB_URL)
+      .then(() => {
+        console.log(`MongoDB connected successfully`);
+      })
+      .catch((error) => console.log(error));
+  };
+  
+  export default connectDb
